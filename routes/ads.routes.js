@@ -7,6 +7,8 @@ router.get('/ads', AdController.getAll);
 
 router.get('/ads/:id', AdController.getById);
 
+router.get('/ads/:searchPhrase', AdController.getByPhrase);
+
 router.post('/ads', AdController.postAd);
 
 router.patch('/ads/:id', AdController.patchAd);

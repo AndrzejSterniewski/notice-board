@@ -8,34 +8,11 @@ const usersRoutes = require('./routes/users.routes');
 
 // start express server
 const app = express();
-const server = app.listen('8000', () => {
+const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running on port: 8000');
 });
-//////////////////////
 
-app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
-//// routes
-app.use('/api', adsRoutes);
-app.use('/api', usersRoutes);
-//////////////////////
-
-app.use(express.static(path.join(__dirname, '/public')));
-
-app.use((req, res, next) => {
-  res.show = (name) => {
-    res.sendFile(path.join(__dirname, `/views/${name}`));
-  };
-  next();
-});
-
-app.get('/', (req, res) => {
-  res.show('home.html');
-});
-
-// database connection
+// connect to database
 mongoose.connect('mongodb://0.0.0.0:27017/noticeBoardDB', { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
@@ -43,7 +20,26 @@ db.once('open', () => {
   console.log('Connected to the database');
 });
 db.on('error', err => console.log('Error ' + err));
-//////////////////////
+
+// add middleware
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+// serve static files from react app
+app.use(express.static(path.join(__dirname, '/client/build')));
+// app.use(express.static(path.join(__dirname, '/public')));
+
+// add routes
+app.use('/api', require('./routes/ads.routes'));
+app.use('/api', require('./routes/users.routes'));
+app.use('/auth', require('./routes/auth.routes'));
+
+// at any other link, serve react app
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '/client/build/index.html'));
+  res.sendFile(path.join(__dirname, '/public'));
+})
 
 // catching wrong links
 app.use((req, res) => {

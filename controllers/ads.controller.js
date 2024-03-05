@@ -1,4 +1,4 @@
-const Ad = require('../models/ad.model');
+const Ad = require('../models/Ad.model');
 
 exports.getAll = async (req, res) => {
     try {
@@ -20,10 +20,21 @@ exports.getById = async (req, res) => {
     }
 };
 
+exports.getByPhrase = async (req, res) => {
+    try {
+        // req.params.searchPhrase
+        res.json(await Ad.find({ title: { $regex: req.params.searchPhrase } }));
+    }
+    catch (err) {
+        res.status(500).json({ message: err });
+    }
+};
+
 exports.postAd = async (req, res) => {
     try {
-        const { text, date, picture, price, location, userInfo } = req.body;
+        const { title, text, date, picture, price, location, userInfo } = req.body;
         const newAdd = new Ad({
+            title: title,
             text: text,
             date: date,
             picture: picture,
@@ -40,10 +51,11 @@ exports.postAd = async (req, res) => {
 };
 
 exports.patchAd = async (req, res) => {
-    const { text, date, picture, price, location, userInfo } = req.body;
+    const { title, text, date, picture, price, location, userInfo } = req.body;
     try {
         const ad = await Ad.findById(req.params.id);
         if (ad) {
+            ad.title = title;
             ad.text = text;
             ad.date = date;
             ad.picture = picture;
