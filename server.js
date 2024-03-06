@@ -1,10 +1,13 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 
 const adsRoutes = require('./routes/ads.routes');
 const usersRoutes = require('./routes/users.routes');
+const authRoutes = require('./routes/auth.routes');
 
 // start express server
 const app = express();
@@ -25,15 +28,22 @@ db.on('error', err => console.log('Error ' + err));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+// czy zamiast mongoose.connection mogę już użyć tej stałej db ustalonej wyżej?
+app.use(session({
+  secret: 'xyz567',
+  store: MongoStore.create(mongoose.connection),
+  resave: false,
+  saveUninitialized: false
+}));
 
 // serve static files from react app
 app.use(express.static(path.join(__dirname, '/client/build')));
 // app.use(express.static(path.join(__dirname, '/public')));
 
 // add routes
-app.use('/api', require('./routes/ads.routes'));
-app.use('/api', require('./routes/users.routes'));
-app.use('/auth', require('./routes/auth.routes'));
+app.use('/api', require(adsRoutes));
+app.use('/api', require(usersRoutes));
+app.use('/auth', require(authRoutes));
 
 // at any other link, serve react app
 app.get('*', (req, res) => {
