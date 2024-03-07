@@ -1,4 +1,5 @@
 const Ad = require('../models/Ad.model');
+const fs = require('fs');
 
 exports.getAll = async (req, res) => {
     try {
@@ -32,7 +33,8 @@ exports.getByPhrase = async (req, res) => {
 
 exports.postAd = async (req, res) => {
     try {
-        const { title, text, date, picture, price, location, userInfo } = req.body;
+        const { title, text, date, price, location, userInfo } = req.body;
+        const picture = req.file.filename;
         const newAdd = new Ad({
             title: title,
             text: text,
@@ -51,14 +53,18 @@ exports.postAd = async (req, res) => {
 };
 
 exports.patchAd = async (req, res) => {
-    const { title, text, date, picture, price, location, userInfo } = req.body;
+    const { title, text, date, price, location, userInfo } = req.body;
+    const picture = req.file.filename;
     try {
         const ad = await Ad.findById(req.params.id);
         if (ad) {
             ad.title = title;
             ad.text = text;
             ad.date = date;
-            ad.picture = picture;
+            if (ad.picture !== picture) {
+                fs.unlinkSync(ad.picture.path);
+                ad.picture = picture;
+            }
             ad.price = price;
             ad.location = location;
             ad.userInfo = userInfo;
