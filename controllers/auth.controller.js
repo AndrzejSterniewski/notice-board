@@ -1,6 +1,7 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
+const fs = require('fs');
 
 exports.register = async (req, res) => {
     try {
@@ -15,6 +16,7 @@ exports.register = async (req, res) => {
 
             const userWithLogin = await User.findOne({ login });
             if (userWithLogin) {
+                fs.unlinkSync(req.file.path);
                 return res.status(409)
                     .send({ message: 'User with this login already exists' });
             }
@@ -27,9 +29,11 @@ exports.register = async (req, res) => {
             });
             res.status(201).send({ message: 'User created ' + user.login });
         } else {
+            fs.unlinkSync(req.file.path);
             res.status(400).send({ message: 'Bad request' });
         }
     } catch (err) {
+        fs.unlinkSync(req.file.path);
         res.status(500).send({ message: err.message });
     }
 };
