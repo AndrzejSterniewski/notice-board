@@ -5,8 +5,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 const mongoose = require('mongoose');
 
-const adsRoutes = require('./routes/ads.routes');
-const usersRoutes = require('./routes/users.routes');
+const adRoutes = require('./routes/ads.routes');
+const userRoutes = require('./routes/users.routes');
 const authRoutes = require('./routes/auth.routes');
 
 // start express server
@@ -33,22 +33,24 @@ app.use(session({
   secret: 'xyz567',
   store: MongoStore.create(mongoose.connection),
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  cookie: {
+    secure: process.env.NODE_ENV == 'production',
+  },
 }));
 
 // serve static files from react app
 app.use(express.static(path.join(__dirname, '/client/build')));
-// app.use(express.static(path.join(__dirname, '/public')));
+app.use(express.static(path.join(__dirname, '/public')));
 
 // add routes
-app.use('/api', require(adsRoutes));
-app.use('/api', require(usersRoutes));
-app.use('/auth', require(authRoutes));
+app.use('/api', adRoutes);
+app.use('/api', userRoutes);
+app.use('/auth', authRoutes);
 
 // at any other link, serve react app
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '/client/build/index.html'));
-  res.sendFile(path.join(__dirname, '/public'));
 })
 
 // catching wrong links
