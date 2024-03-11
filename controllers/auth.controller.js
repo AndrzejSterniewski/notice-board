@@ -14,6 +14,12 @@ exports.register = async (req, res) => {
             phone && typeof phone === 'number' &&
             req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
 
+            console.log(login);
+            console.log(password);
+            console.log(phone);
+            console.log(req.file);
+            console.log(fileType);
+
             const userWithLogin = await User.findOne({ login });
             if (userWithLogin) {
                 fs.unlinkSync(req.file.path);
@@ -33,7 +39,7 @@ exports.register = async (req, res) => {
             res.status(400).send({ message: 'Bad request' });
         }
     } catch (err) {
-        fs.unlinkSync(req.file.path);
+        fs.unlinkSync(req.file);
         res.status(500).send({ message: err.message });
     }
 };

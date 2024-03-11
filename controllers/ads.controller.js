@@ -61,8 +61,8 @@ exports.patchAd = async (req, res) => {
             ad.title = title;
             ad.text = text;
             ad.date = date;
-            if (ad.picture !== picture) {
-                fs.unlinkSync(ad.picture.path);
+            if (picture) {
+                fs.unlinkSync(ad.picture);
                 ad.picture = picture;
             }
             ad.price = price;

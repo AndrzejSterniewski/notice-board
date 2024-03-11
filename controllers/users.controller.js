@@ -22,7 +22,9 @@ exports.getById = async (req, res) => {
 
 exports.postUser = async (req, res) => {
     try {
-        const { login, password, avatar, phone } = req.body;
+        // const { login, password, avatar, phone } = req.body;
+        const { login, password, phone } = req.body;
+        const avatar = req.file.filename;
         const newUser = new User({
             login: login,
             password: password,
@@ -38,7 +40,9 @@ exports.postUser = async (req, res) => {
 };
 
 exports.patchUser = async (req, res) => {
-    const { login, password, avatar, phone } = req.body;
+    // const { login, password, avatar, phone } = req.body;
+    const { login, password, phone } = req.body;
+    const avatar = req.file.filename;
     try {
         const user = await User.findById(req.params.id);
         if (user) {
