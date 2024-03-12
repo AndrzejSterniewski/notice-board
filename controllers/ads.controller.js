@@ -1,5 +1,6 @@
 const Ad = require('../models/Ad.model');
 const fs = require('fs');
+const getImageFileType = require('../utils/getImageFileType');
 
 exports.getAll = async (req, res) => {
     try {
@@ -35,17 +36,31 @@ exports.postAd = async (req, res) => {
     try {
         const { title, text, date, price, location, userInfo } = req.body;
         const picture = req.file.filename;
-        const newAdd = new Ad({
-            title: title,
-            text: text,
-            date: date,
-            picture: picture,
-            price: price,
-            location: location,
-            userInfo: userInfo
-        });
-        await newAdd.save();
-        res.json({ message: 'OK' });
+        const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
+        if (title &&
+            text &&
+            date &&
+            price &&
+            location &&
+            userInfo &&
+            req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+
+            const newAdd = new Ad({
+                title: title,
+                text: text,
+                date: date,
+                price: price,
+                location: location,
+                userInfo: req.session.user.id,
+                picture: picture
+            });
+            await newAdd.save();
+            res.json({ message: 'OK' });
+        }
+        else {
+            res.status(400).send({ message: 'Bad request' });
+        }
     }
     catch (err) {
         res.status(500).json({ message: err });
@@ -55,23 +70,38 @@ exports.postAd = async (req, res) => {
 exports.patchAd = async (req, res) => {
     const { title, text, date, price, location, userInfo } = req.body;
     const picture = req.file.filename;
+    const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
     try {
-        const ad = await Ad.findById(req.params.id);
-        if (ad) {
-            ad.title = title;
-            ad.text = text;
-            ad.date = date;
-            if (picture) {
-                fs.unlinkSync(ad.picture);
-                ad.picture = picture;
+        if (title &&
+            text &&
+            date &&
+            price &&
+            location &&
+            userInfo &&
+            req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+
+
+            const ad = await Ad.findById(req.params.id);
+            if (ad) {
+                ad.title = title;
+                ad.text = text;
+                ad.date = date;
+                ad.price = price;
+                ad.location = location;
+                ad.userInfo = userInfo;
+                if (picture) {
+                    fs.unlinkSync(ad.picture);
+                    ad.picture = picture;
+                };
+                await ad.save();
+                res.json({ message: 'OK' });
             }
-            ad.price = price;
-            ad.location = location;
-            ad.userInfo = userInfo;
-            await ad.save();
-            res.json({ message: 'OK' });
+            else res.status(404).json({ messsage: 'Not found' });
         }
-        else res.status(404).json({ messsage: 'Not found' });
+        else {
+            res.status(400).send({ message: 'Bad request' });
+        }
     }
     catch (err) {
         res.status(500).json({ message: err });
