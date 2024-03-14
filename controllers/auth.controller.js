@@ -89,21 +89,11 @@ exports.getUser = async (req, res) => {
     }
 };
 
-// exports.logout = async (req, res) => {
-//     try {
-//         req.session.destroy();
-//         res.send({ message: 'You\'ve been logged out.' });
-//     }
-//     catch (err) {
-//         res.status(500).send({ message: err.message });
-//     };
-//     if (process.env.NODE_ENV !== "production") await Session.deleteMany({});
-// };
-
 exports.logout = async (req, res) => {
     try {
         if (req.session.user) {
             req.session.destroy();
+            if (process.env.NODE_ENV !== "production") await Session.deleteMany({});
             res.send({ message: 'You\'ve been logged out.' });
         }
         else {
@@ -113,5 +103,4 @@ exports.logout = async (req, res) => {
     catch (err) {
         res.status(500).send({ message: err.message });
     };
-    // if (process.env.NODE_ENV !== "production") await Session.deleteMany({});
 };
