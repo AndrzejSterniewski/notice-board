@@ -10,6 +10,9 @@ const NavBar = () => {
                 <Navbar.Brand as={NavLink} to="/">NoticeBoard</Navbar.Brand>
                 <Nav>
                     <Nav.Link as={NavLink} to="/">Home</Nav.Link>
+                    <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
+                    <Nav.Link as={NavLink} to="/logout">Logout</Nav.Link>
+                    <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
