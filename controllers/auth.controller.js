@@ -1,4 +1,5 @@
 const User = require('../models/User.model');
+const Session = require('../models/Session.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
 const fs = require('fs');
@@ -9,14 +10,6 @@ exports.register = async (req, res) => {
         const avatar = req.file.filename;
         const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
-        console.log(login);
-        console.log(password);
-        console.log(phone);
-        console.log(req.file);
-        console.log(avatar);
-        console.log(fileType);
-
-
         if (login && typeof login === 'string' &&
             password && typeof password === 'string' &&
             phone &&
@@ -24,10 +17,18 @@ exports.register = async (req, res) => {
 
             const userWithLogin = await User.findOne({ login });
             if (userWithLogin) {
-                fs.unlinkSync(req.file.path);
+                fs.unlinkSync(`public/uploads/${req.file.filename}`);
                 return res.status(409)
                     .send({ message: 'User with this login already exists' });
             }
+
+            console.log('login:', login);
+            console.log('password:', password);
+            console.log('phone:', phone);
+            console.log('req.file:', req.file);
+            console.log('req.file.filename:', req.file.filename);
+            console.log('avatar:', avatar);
+            console.log('ileType:', fileType);
 
             const user = await User.create({
                 login,
@@ -37,11 +38,10 @@ exports.register = async (req, res) => {
             });
             res.status(201).send({ message: 'User created ' + user.login });
         } else {
-            fs.unlinkSync(req.file.path);
+            fs.unlinkSync(`public/uploads/${req.file.filename}`);
             res.status(400).send({ message: 'Bad request' });
         }
     } catch (err) {
-        fs.unlinkSync(req.file);
         res.status(500).send({ message: err.message });
     }
 };

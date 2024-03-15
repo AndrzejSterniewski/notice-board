@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Form, Button, Alert, Spinner } from 'react-bootstrap';
 import { API_URL } from '../../../config';
+import Loader from '../../views/Loader/Loader';
 
 const Register = () => {
 
@@ -48,9 +49,9 @@ const Register = () => {
     };
 
     return (
-        <Form className="col-12 col-sm-3 mx-auto" onSubmit={handleSubmit}>
+        <Form className="col-12 col-sm-3 mx-auto text-center" onSubmit={handleSubmit}>
 
-            <h1 className="text-center my-4">Sign up</h1>
+            <h1 className="my-4">Sign up</h1>
 
             {status === 'success' && (
                 <Alert variant="success">
@@ -75,15 +76,13 @@ const Register = () => {
 
             {status === 'loginError' && (
                 <Alert variant="warning">
-                    <Alert.Heading>Login already in use</Alert.Heading>
+                    <Alert.Heading>Login already in use.</Alert.Heading>
                     <p>You have to use other login.</p>
                 </Alert>
             )}
 
             {status === 'loading' && (
-                <Spinner animation="border" role="status" className="block mx-auto">
-                    <span className="visually-hidden">Loading...</span>
-                </Spinner>
+                <Loader />
             )}
 
 
