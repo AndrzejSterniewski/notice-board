@@ -1,10 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
 import { Container } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
-
-import { fetchUser } from "./redux/userRedux";
-// import { fetchAdverts } from "./redux/adsRedux";
 
 import Header from './components/views/Header/Header';
 import Footer from './components/views/Footer/Footer';
@@ -21,13 +16,6 @@ import Logout from './components/pages/Logout/Logout';
 import NotFound from './components/pages/NotFound/NotFound';
 
 const App = () => {
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(fetchUser());
-    // dispatch(fetchAds());
-  }, [dispatch]);
 
   return (
     <main>

@@ -1,9 +1,10 @@
 import { Container } from "react-bootstrap";
+import AddAdForm from "../../features/AddAdForm/AddAdForm";
 
 const AdAdd = () => {
     return (
         <Container>
-            <div>AdAdd</div>
+            <AddAdForm />
         </Container>
     );
 };

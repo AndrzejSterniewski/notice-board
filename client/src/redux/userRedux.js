@@ -1,5 +1,3 @@
-import { API_URL } from '../config';
-
 //selector
 export const getUser = (state => state.user);
 
@@ -19,22 +17,7 @@ export const logOut = payload => ({
 
 
 // thunk
-export const fetchUser = () => {
-    return (dispatch) => {
-        fetch(API_URL + "/auth/user")
-            .then((res) => {
-                if (res.status === 200) {
-                    return res.json();
-                } else {
-                    throw new Error("No logged in user");
-                }
-            })
-            .then((user) => dispatch(logIn({ user })))
-            .catch((err) => {
-                console.log(err);
-            });
-    };
-};
+
 
 const userReducer = (statePart = null, action) => {
     switch (action.type) {

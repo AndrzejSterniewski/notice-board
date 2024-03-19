@@ -1,9 +1,10 @@
 import { Container } from "react-bootstrap";
+import SearchForm from "../../features/SearchForm/SearchForm";
 
 const Search = () => {
     return (
         <Container>
-            <div>Search</div>
+            <SearchForm />
         </Container>
     );
 };

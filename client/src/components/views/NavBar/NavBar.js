@@ -13,6 +13,8 @@ const NavBar = () => {
                     <Nav.Link as={NavLink} to="/login">Login</Nav.Link>
                     <Nav.Link as={NavLink} to="/logout">Logout</Nav.Link>
                     <Nav.Link as={NavLink} to="/register">Register</Nav.Link>
+                    <Nav.Link as={NavLink} to="/ad/add">Add ad</Nav.Link>
+                    <Nav.Link as={NavLink} to="/search/:searchPhrase">Search</Nav.Link>
                 </Nav>
             </Container>
         </Navbar>
