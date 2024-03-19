@@ -23,7 +23,7 @@ const SearchForm = (props) => {
                     placeholder="Search..."
                     action={props.action}
                     defaultValue={searchString}
-                    onchange={handleChange}
+                    onChange={handleChange}
                 />
             </InputGroup>
             <Button>Search</Button>
