@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { API_URL } from '../../../config';
 import Loader from '../../views/Loader/Loader';
+import { useNavigate } from 'react-router-dom';
 
 const AdForm = () => {
 
@@ -9,8 +10,12 @@ const AdForm = () => {
     const [title, setTitle] = useState('');
     const [date, setDate] = useState('');
     const [picture, setPicture] = useState(null);
+    const [price, setPrice] = useState('');
     const [location, setLocation] = useState('');
     const [status, setStatus] = useState(null);
+
+    const navigate = useNavigate();
+
 
     const handleSubmit = e => {
 
@@ -21,7 +26,8 @@ const AdForm = () => {
         fd.append('title', title);
         fd.append('date', date);
         fd.append('picture', picture);
-        fd.append('location', picture);
+        fd.append('price', price);
+        fd.append('location', location);
 
         const options = {
             method: 'POST',
@@ -29,10 +35,11 @@ const AdForm = () => {
         };
 
         setStatus('loading');
-        fetch(`${API_URL}/ad/add`, options)
+        fetch(`${API_URL}/api/ads`, options)
             .then(res => {
-                if (res.status === 201) {
+                if (res.status === 200) {
                     setStatus('success');
+                    navigate('/');
                 }
                 else if (res.status === 400) {
                     setStatus('clientError');
@@ -60,7 +67,7 @@ const AdForm = () => {
             )}
 
             {status === 'serverError' && (
-                <Alert Alert variant="danger">
+                <Alert variant="danger">
                     <Alert.Heading>Something went wrong...</Alert.Heading>
                     <p>Unexpected error... Try again.</p>
                 </Alert>
@@ -102,7 +109,7 @@ const AdForm = () => {
                 <Form.Control
                     type="date"
                     value={date}
-                    onChange={e => setDate(e.target.vale)} />
+                    onChange={e => setDate(e.target.value)} />
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formFile">
@@ -111,6 +118,16 @@ const AdForm = () => {
                     type="file"
                     // value={picture}
                     onChange={e => setPicture(e.target.files[0])} />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+                <Form.Label>Price</Form.Label>
+                <Form.Control
+                    type="number"
+                    value={price}
+                    onChange={e => setPrice(e.target.value)}
+                    placeholder="Enter price"
+                />
             </Form.Group>
 
             <Form.Group className="mb-3">

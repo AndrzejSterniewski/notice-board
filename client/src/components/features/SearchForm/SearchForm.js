@@ -1,4 +1,4 @@
-import { updateSearchstring } from '../../../redux/searschStringRedux';
+import { updateSearchstring } from '../../../redux/searchStringRedux';
 import { Form, InputGroup, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 

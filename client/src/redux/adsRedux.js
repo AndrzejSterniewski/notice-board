@@ -21,7 +21,7 @@ export const removeAd = payload => ({ type: REMOVE_AD, payload });
 export const loadAdsRequest = () => {
     return async (dispatch) => {
         try {
-            const response = await fetch(`${API_URL}/ads`);
+            const response = await fetch(`${API_URL}/api/ads`);
             const data = await response.json();
             console.log(data);
             dispatch(loadAds(data));
@@ -38,7 +38,7 @@ export const removeAdRequest = (id) => {
                 method: 'DELETE',
                 credentials: 'include',
             };
-            const response = await fetch(`${API_URL}/ads/${id}`, options);
+            const response = await fetch(`${API_URL}/api/ads/${id}`, options);
             dispatch(removeAd(id));
         } catch (error) {
             console.log(error);

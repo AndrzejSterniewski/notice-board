@@ -34,16 +34,21 @@ exports.getByPhrase = async (req, res) => {
 
 exports.postAd = async (req, res) => {
     try {
-        const { title, text, date, price, location, userInfo } = req.body;
+        const { title, text, date, price, location } = req.body;
         const picture = req.file.filename;
         const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
+
+        console.log(title);
+        console.log(text);
+        console.log(date);
+        console.log(price);
+        console.log(location);
 
         if (title &&
             text &&
             date &&
             price &&
             location &&
-            userInfo &&
             req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
 
             const newAdd = new Ad({
@@ -59,10 +64,12 @@ exports.postAd = async (req, res) => {
             res.json({ message: 'OK' });
         }
         else {
+            console.log();
             res.status(400).send({ message: 'Bad request' });
         }
     }
     catch (err) {
+        console.log(err);
         res.status(500).json({ message: err });
     }
 };
