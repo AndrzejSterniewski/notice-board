@@ -3,19 +3,22 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { API_URL } from '../../../config';
 import Loader from '../../views/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
+import { addAd } from '../../../redux/adsRedux';
+import { useDispatch, useSelector } from 'react-redux';
 
-const AdForm = () => {
+const AdForm = (props) => {
 
-    const [text, setText] = useState('');
-    const [title, setTitle] = useState('');
-    const [date, setDate] = useState('');
-    const [picture, setPicture] = useState(null);
-    const [price, setPrice] = useState('');
-    const [location, setLocation] = useState('');
+    const [text, setText] = useState(props.text || '');
+    const [title, setTitle] = useState(props.title || '');
+    const [date, setDate] = useState(props.date || '');
+    const [picture, setPicture] = useState(props.picture || null);
+    const [price, setPrice] = useState(props.price || '');
+    const [location, setLocation] = useState(props.location || '');
+    
     const [status, setStatus] = useState(null);
-
     const navigate = useNavigate();
-
+    const dispatch = useDispatch();
+    const user = useSelector(state => state.user);
 
     const handleSubmit = e => {
 
@@ -39,7 +42,6 @@ const AdForm = () => {
             .then(res => {
                 if (res.status === 200) {
                     setStatus('success');
-                    navigate('/');
                 }
                 else if (res.status === 400) {
                     setStatus('clientError');
@@ -47,17 +49,31 @@ const AdForm = () => {
                 else {
                     setStatus('serverError');
                 }
+                return res.json()
             })
+            .then(res => {
+                dispatch(addAd(
+                    {
+                        text,
+                        title,
+                        date,
+                        picture: res.picture,
+                        price,
+                        location
+                    }
+                ));
+                navigate('/');
+            }
+            )
             .catch((err) => {
                 setStatus('serverError');
             });
     };
 
+    if(!user) return <div>You are not logged in!</div>
     return (
         // <Form onSubmit={validate(handleSubmit)}>
         < Form className="col-12 col-sm-3 mx-auto text-center" onSubmit={handleSubmit} >
-
-            <h1 className="my-4">Add ad</h1>
 
             {status === 'success' && (
                 <Alert variant="success">

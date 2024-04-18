@@ -1,33 +1,67 @@
-import { Col, Card, ListGroup, Button } from "react-bootstrap";
-import { Link } from 'react-router-dom';
+import { Col, Card, ListGroup, Button, Modal } from "react-bootstrap";
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
+import { getAdById, removeAdRequest } from "../../../redux/adsRedux";
+import { useDispatch, useSelector } from "react-redux";
+import { IMGS_URL } from '../../../config';
 
 const Ad = (props) => {
-    return (
-        <Col>
-            <Card sm={4} className="p-2">
-                <Card style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src="" />
-                    <Card.Body>
-                        <Card.Title>{props.title}</Card.Title>
-                        <Card.Text>
-                            {props.text}
-                        </Card.Text>
-                        <Card.Img>
+    const user = useSelector((state) => state.user);
 
-                        </Card.Img>
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const params = useParams();
+    const ad = useSelector((state) => getAdById(state, params.id));
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+    const deleteAd = AdId => {
+        dispatch(removeAdRequest(AdId));
+        navigate('/');
+    };
+
+    return (
+        <Col className="d-flex justify-content-center">
+            {/* <Card sm={4} className="p-2 d-flex align-items-center"> */}
+                <Card style={{ width: '20rem' }} className="text-center">
+                    <Card.Img variant="top" src={IMGS_URL + ad.picture} />
+                    <Card.Body>
+                        <Card.Title>{ad.title}</Card.Title>
+                        <Card.Text>
+                            {ad.text}
+                        </Card.Text>
                     </Card.Body>
                     <ListGroup className="list-group-flush">
-                        <ListGroup.Item>{props.price}</ListGroup.Item>
-                        <ListGroup.Item>{props.date}</ListGroup.Item>
-                        <ListGroup.Item>{props.location}</ListGroup.Item>
-                        <ListGroup.Item>{props.userInfo}</ListGroup.Item>
+                        <ListGroup.Item>{ad.price}</ListGroup.Item>
+                        <ListGroup.Item>{ad.date}</ListGroup.Item>
+                        <ListGroup.Item>{ad.location}</ListGroup.Item>
+                        <ListGroup.Item>{ad.userInfo}</ListGroup.Item>
                     </ListGroup>
-                    <Card.Body>
-                        <Button variant="primary" as={Link} to={`/ad/edit/${props.id}`}>Edit</Button>
-                        <Button variant="danger" as={Link} to={`/ad/remove/${props.id}`}>Remove</Button>
-                    </Card.Body>
+                    {user &&
+                    (<Card.Body>
+                        <Button variant="primary" as={Link} to={`/ad/edit/${ad._id}`}  className="mx-2">Edit</Button>
+                        {/* <Button variant="danger" as={Link} to={`/ad/remove/${props.id}`}>Remove</Button> */}
+                        <Button variant="danger" onClick={handleShow} className="mx-2">Delete</Button>
+                    </Card.Body>)
+                    }
+                    <Modal show={show} onHide={handleClose}>
+                        <Modal.Header closeButton>
+                            <Modal.Title>Are you sure?</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>The operation will completely remove this ad from the app. <br /> Are you sure you want to do that?</Modal.Body>
+                        <Modal.Footer>
+                            <Button variant="secondary" onClick={handleClose}>
+                                Cancel
+                            </Button>
+                            <Button variant="danger" onClick={() => deleteAd(ad._id)}>
+                                Delete
+                            </Button>
+                        </Modal.Footer>
+                    </Modal>
                 </Card>
-            </Card>
+            {/* </Card> */}
         </Col>
     )
 }

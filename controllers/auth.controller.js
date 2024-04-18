@@ -69,7 +69,7 @@ exports.login = async (req, res) => {
                     res.status(200).send({ message: 'Login successful' })
                 }
                 else {
-                    res.status(400).send({ message: 'Login or password are incorrect' });
+                    res.status(400).send({ message: '2 else Login or password are incorrect' });
                 }
             }
         }

@@ -61,7 +61,7 @@ exports.postAd = async (req, res) => {
                 picture: picture
             });
             await newAdd.save();
-            res.json({ message: 'OK' });
+            res.json({ picture: picture });
         }
         else {
             console.log();

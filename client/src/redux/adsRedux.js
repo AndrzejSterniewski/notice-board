@@ -2,8 +2,8 @@ import { API_URL } from '../config';
 import { nanoid } from 'nanoid';
 
 //selectors
-export const getAllAds = (state => state.ads);
-export const getAdById = ({ ads }, id) => ads.find(ad => ad.id === id);
+export const getAllAds = (state => state.ads.filter(ad => ad.title.toLowerCase().includes(state.searchString.toLowerCase())));
+export const getAdById = ({ ads }, id) => ads.find(ad => ad._id === id);
 
 //actions
 const createActionName = actionName => `app/ads/${actionName}`;
@@ -36,9 +36,10 @@ export const removeAdRequest = (id) => {
         try {
             const options = {
                 method: 'DELETE',
-                credentials: 'include',
+                // credentials: 'include',
+                // przywrócić gdy będzie połączona apka w jedna całość
             };
-            const response = await fetch(`${API_URL}/api/ads/${id}`, options);
+            await fetch(`${API_URL}/api/ads/${id}`, options);
             dispatch(removeAd(id));
         } catch (error) {
             console.log(error);

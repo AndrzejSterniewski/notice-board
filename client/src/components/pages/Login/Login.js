@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Form, Button, Alert } from 'react-bootstrap';
 import Loader from '../../views/Loader/Loader';
 import { API_URL } from '../../../config';
 import { logIn } from '../../../redux/userRedux';
 
 const Login = () => {
+
+    const user = useSelector((state) => state.user);
 
     const [login, setLogin] = useState('');
     const [password, setPassword] = useState('');
@@ -83,19 +85,23 @@ const Login = () => {
                     <Loader />
                 )}
 
-                <Form.Group className="mb-3" controlId="formLogin">
-                    <Form.Label>Login</Form.Label>
-                    <Form.Control type="text" value={login} onChange={e => setLogin(e.target.value)} placeholder="Enter login" />
-                </Form.Group>
+                {!user &&
+                    <>
+                        <Form.Group className="mb-3" controlId="formLogin">
+                            <Form.Label>Login</Form.Label>
+                            <Form.Control type="text" value={login} onChange={e => setLogin(e.target.value)} placeholder="Enter login" />
+                        </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
-                </Form.Group>
+                        <Form.Group className="mb-3" controlId="formPassword">
+                            <Form.Label>Password</Form.Label>
+                            <Form.Control type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" />
+                        </Form.Group>
 
-                <Button variant="primary" type="submit">
-                    Log in
-                </Button>
+                        <Button variant="primary" type="submit">
+                            Log in
+                        </Button>
+                    </>
+                }
             </Form>
 
         </div>

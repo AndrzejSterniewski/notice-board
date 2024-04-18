@@ -1,9 +1,10 @@
 import Ads from "../../features/Ads/Ads";
+import SearchForm from "../../features/SearchForm/SearchForm";
 
 const Home = () => {
     return (
         <>
-            <h1>NoticeBoard Home Page</h1>
+            <SearchForm />
             <Ads />
         </>
     );
