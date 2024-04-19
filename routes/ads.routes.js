@@ -13,7 +13,7 @@ router.get('/ads/:searchPhrase', AdController.getByPhrase);
 
 router.post('/ads', authMiddleware, imageUpload.single('picture'), AdController.postAd);
 
-router.patch('/ads/:id', authMiddleware, AdController.patchAd);
+router.patch('/ads/:id', authMiddleware, imageUpload.single('picture'), AdController.patchAd);
 
 router.delete('/ads/:id', authMiddleware, AdController.deleteAd);
 

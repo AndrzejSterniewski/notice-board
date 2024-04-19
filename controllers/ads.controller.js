@@ -76,19 +76,22 @@ exports.postAd = async (req, res) => {
 
 exports.patchAd = async (req, res) => {
     const { title, text, date, price, location, userInfo } = req.body;
-    const picture = req.file.filename;
+    const picture = req.file?.filename || '';
     const fileType = req.file ? await getImageFileType(req.file) : 'unknown';
 
+    console.log(title,
+        text,
+        date,
+        price,
+        location )
     try {
         if (title &&
             text &&
             date &&
             price &&
             location &&
-            userInfo &&
-            req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
-
-
+            (!req.file || (req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)))) 
+            {
             const ad = await Ad.findById(req.params.id);
             if (ad) {
                 ad.title = title;
@@ -96,13 +99,13 @@ exports.patchAd = async (req, res) => {
                 ad.date = date;
                 ad.price = price;
                 ad.location = location;
-                ad.userInfo = userInfo;
                 if (picture) {
                     fs.unlinkSync(ad.picture);
                     ad.picture = picture;
                 };
                 await ad.save();
-                res.json({ message: 'OK' });
+                console.log('console.log' + ad.picture);
+                res.json({ picture: ad.picture });
             }
             else res.status(404).json({ messsage: 'Not found' });
         }

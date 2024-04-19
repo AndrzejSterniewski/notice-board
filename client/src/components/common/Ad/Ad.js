@@ -5,7 +5,7 @@ import { getAdById, removeAdRequest } from "../../../redux/adsRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { IMGS_URL } from '../../../config';
 
-const Ad = (props) => {
+const Ad = () => {
     const user = useSelector((state) => state.user);
 
     const dispatch = useDispatch();
@@ -35,7 +35,7 @@ const Ad = (props) => {
                     </Card.Body>
                     <ListGroup className="list-group-flush">
                         <ListGroup.Item>{ad.price}</ListGroup.Item>
-                        <ListGroup.Item>{ad.date}</ListGroup.Item>
+                        <ListGroup.Item>{new Date(ad.date).toLocaleDateString()}</ListGroup.Item>
                         <ListGroup.Item>{ad.location}</ListGroup.Item>
                         <ListGroup.Item>{ad.userInfo}</ListGroup.Item>
                     </ListGroup>

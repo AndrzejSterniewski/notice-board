@@ -1,3 +1,5 @@
+import { API_URL } from "../config";
+
 //selector
 export const getUser = (state => state.user);
 

@@ -14,7 +14,7 @@ const AddAdForm = () => {
     }
 
     return (
-        <AdForm action={handleSubmit} actionText="Add ad" />
+        <AdForm action={handleSubmit} actionText="Add ad" variant="add"/>
     )
 }
 

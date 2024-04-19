@@ -3,10 +3,11 @@ import { Form, Button, Alert } from 'react-bootstrap';
 import { API_URL } from '../../../config';
 import Loader from '../../views/Loader/Loader';
 import { useNavigate } from 'react-router-dom';
-import { addAd } from '../../../redux/adsRedux';
 import { useDispatch, useSelector } from 'react-redux';
 
 const AdForm = (props) => {
+
+    console.log(props);
 
     const [text, setText] = useState(props.text || '');
     const [title, setTitle] = useState(props.title || '');
@@ -33,12 +34,12 @@ const AdForm = (props) => {
         fd.append('location', location);
 
         const options = {
-            method: 'POST',
+            method: props.variant === 'add' ? 'POST' : 'PATCH',
             body: fd
         };
 
         setStatus('loading');
-        fetch(`${API_URL}/api/ads`, options)
+        fetch(`${API_URL}/api/ads${props.variant === 'add' ? '' : '/' + props.id}`, options)
             .then(res => {
                 if (res.status === 200) {
                     setStatus('success');
@@ -52,17 +53,25 @@ const AdForm = (props) => {
                 return res.json()
             })
             .then(res => {
-                dispatch(addAd(
-                    {
-                        text,
-                        title,
-                        date,
-                        picture: res.picture,
-                        price,
-                        location
-                    }
-                ));
-                navigate('/');
+                props.action({
+                    text,
+                    title,
+                    date,
+                    picture: res.picture,
+                    price,
+                    location
+                })
+                // dispatch(addAd(
+                    // {
+                    //     text,
+                    //     title,
+                    //     date,
+                    //     picture: res.picture,
+                    //     price,
+                    //     location
+                    // }
+                // ));
+                // navigate('/');
             }
             )
             .catch((err) => {
@@ -157,7 +166,7 @@ const AdForm = (props) => {
             </Form.Group>
 
             <Button variant="primary" type="submit">
-                Publish
+                {props.actionText}
             </Button>
 
         </Form>

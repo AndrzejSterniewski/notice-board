@@ -54,7 +54,7 @@ const adsReducer = (statePart = [], action) => {
         case ADD_AD:
             return [...statePart, { ...action.payload, _id: nanoid() }]
         case UPDATE_AD:
-            return statePart.map((ad) => ad.id === action.payload.id ? { ...ad, ...action.payload } : ad);
+            return statePart.map((ad) => ad._id === action.payload._id ? { ...ad, ...action.payload } : ad);
         case REMOVE_AD:
             return statePart.filter((ad) => ad._id !== action.payload);
         default:
