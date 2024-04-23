@@ -26,7 +26,7 @@ const SearchForm = (props) => {
                     onChange={handleChange}
                 />
             </InputGroup>
-            <Button>Search</Button>
+            {/* <Button>Search</Button> */}
         </Form>
     )
 }

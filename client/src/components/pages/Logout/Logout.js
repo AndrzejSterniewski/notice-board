@@ -18,10 +18,10 @@ const Logout = () => {
         fetch(`${API_URL}/auth/logout`, options)
             .then(() => {
                 dispatch(logOut());
-
-                setTimeout(() => {
-                    navigate('/');
-                }, 2000);
+                navigate('/');
+                // setTimeout(() => {
+                //     navigate('/');
+                // }, 2000);
 
             });
     }, [dispatch, navigate]);

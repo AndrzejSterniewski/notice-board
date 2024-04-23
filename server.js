@@ -15,17 +15,19 @@ const server = app.listen(process.env.PORT || 8000, () => {
   console.log('Server is running on port: 8000');
 });
 
-// const NODE_ENV = process.env.NODE_ENV;
-// let dbUri = '';
+const NODE_ENV = process.env.NODE_ENV;
+let dbUri = '';
 
 // db connection for different cases e.g. for tests
-// if (NODE_ENV === 'production') dbUri = 'url to remote db';
-// else if (NODE_ENV === 'test') dbUri = 'mongodb://0.0.0.0/NewWaveDBtest';
-// else dbUri = 'mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NewWaveDB?retryWrites=true&w=majority';
+if (NODE_ENV === 'production') dbUri = 'url to remote db';
+// else if (NODE_ENV === 'test') dbUri = 'mongodb://0.0.0.0/noticeBoardDBtest';
+// else dbUri = 'mongodb+srv://Andrzej:1234@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority';
+else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority`;
+// else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority&appName=Cluster0`;
 
 // connect to database
-// const db = mongoose.connection;
-mongoose.connect('mongodb://0.0.0.0:27017/noticeBoardDB', { useNewUrlParser: true, useUnifiedTopology: true });
+// mongoose.connect('mongodb://0.0.0.0:27017/noticeBoardDB', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 
 db.once('open', () => {

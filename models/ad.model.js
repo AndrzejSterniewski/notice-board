@@ -1,8 +1,8 @@
 const mongoose = require('mongoose');
 
 const adSchema = new mongoose.Schema({
-    title: { type: String, minLength: 10, maxLength: 50, required: true },
-    text: { type: String, minLength: 20, maxLength: 1000, required: true },
+    title: { type: String, minLength: 5, maxLength: 50, required: true },
+    text: { type: String, minLength: 10, maxLength: 500, required: true },
     date: { type: Date, required: true },
     picture: { type: String, required: true },
     price: { type: Number, required: true },
