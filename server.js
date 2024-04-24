@@ -22,7 +22,7 @@ let dbUri = '';
 if (NODE_ENV === 'production') dbUri = 'url to remote db';
 // else if (NODE_ENV === 'test') dbUri = 'mongodb://0.0.0.0/noticeBoardDBtest';
 // else dbUri = 'mongodb+srv://Andrzej:1234@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority';
-else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority`;
+else dbUri = `mongodb+srv://Andrzej:1234@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority`;
 // else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority&appName=Cluster0`;
 
 // connect to database
