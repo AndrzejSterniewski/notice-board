@@ -22,7 +22,7 @@ let dbUri = '';
 if (NODE_ENV === 'production') dbUri = 'url to remote db';
 // else if (NODE_ENV === 'test') dbUri = 'mongodb://0.0.0.0/noticeBoardDBtest';
 // else dbUri = 'mongodb+srv://Andrzej:1234@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority';
-else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority`;
+else dbUri = `mongodb+srv://Andrzej:1234@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority`;
 // else dbUri = `mongodb+srv://Andrzej:${process.env.DB_PASS}@cluster0.mfattfu.mongodb.net/NoticeBoardDB?retryWrites=true&w=majority&appName=Cluster0`;
 
 // connect to database
@@ -39,7 +39,6 @@ db.on('error', err => console.log('Error ' + err));
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// czy zamiast mongoose.connection mogę już użyć tej stałej db ustalonej wyżej?
 app.use(session({
   secret: 'xyz567',
   store: MongoStore.create(mongoose.connection),
