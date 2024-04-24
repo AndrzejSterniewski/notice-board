@@ -1,5 +1,5 @@
-const User = require('../models/User.model');
-const Session = require('../models/Session.model');
+const User = require('../models/user.model');
+const Session = require('../models/session.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
 const fs = require('fs');
