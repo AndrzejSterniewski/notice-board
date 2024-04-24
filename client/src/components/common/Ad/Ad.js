@@ -24,9 +24,8 @@ const Ad = () => {
 
     return (
         <Col className="d-flex justify-content-center">
-            {/* <Card sm={4} className="p-2 d-flex align-items-center"> */}
-                <Card style={{ width: '20rem' }} className="text-center">
-                    <Card.Img variant="top" src={IMGS_URL + ad.picture} />
+                <Card style={{  width: '20rem' }} className="text-center">
+                    <Card.Img variant="top" src={IMGS_URL + ad.picture} className="object-fit-cover"/>
                     <Card.Body>
                         <Card.Title>{ad.title}</Card.Title>
                         <Card.Text>
@@ -42,7 +41,6 @@ const Ad = () => {
                     {user &&
                     (<Card.Body>
                         <Button variant="primary" as={Link} to={`/ad/edit/${ad._id}`}  className="mx-2">Edit</Button>
-                        {/* <Button variant="danger" as={Link} to={`/ad/remove/${props.id}`}>Remove</Button> */}
                         <Button variant="danger" onClick={handleShow} className="mx-2">Delete</Button>
                     </Card.Body>)
                     }
@@ -61,7 +59,6 @@ const Ad = () => {
                         </Modal.Footer>
                     </Modal>
                 </Card>
-            {/* </Card> */}
         </Col>
     )
 }

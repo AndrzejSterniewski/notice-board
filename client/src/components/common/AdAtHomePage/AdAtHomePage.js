@@ -6,7 +6,7 @@ const Ad = (props) => {
 
     return (
                 <Card style={{ width: '20rem' }} className="text-center">
-                    <Card.Img variant="top" src={IMGS_URL + props.picture} />
+                    <Card.Img variant="top" src={IMGS_URL + props.picture} style={{ height: '20rem' }} className="object-fit-cover"/>
                     <Card.Body>
                         <Card.Title>{props.title}</Card.Title>
                     </Card.Body>
@@ -15,7 +15,6 @@ const Ad = (props) => {
                     </ListGroup>
                     <Card.Body>
                         <Button variant="primary" as={Link} to={`/ad/${props._id}`}>Details</Button>
-                        {/* <Button variant="danger" as={Link} to={`/ad/remove/${props.id}`}>Remove</Button> */}
                     </Card.Body>
                 </Card>
     )
