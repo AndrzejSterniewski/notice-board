@@ -1,4 +1,4 @@
-const Ad = require('../models/Ad.model');
+const Ad = require('../models/ad.model');
 const fs = require('fs');
 const getImageFileType = require('../utils/getImageFileType');
 
